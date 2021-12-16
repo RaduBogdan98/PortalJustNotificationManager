@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,16 +6,19 @@ using System.Xml;
 
 namespace PortalJustNotificationManager.API
 {
-   class PortalJustHttpClient : HttpClient
+   class PortalJustHttpClient
    {
+      private HttpClient httpClient;
+
       public PortalJustHttpClient()
       {
-         this.DefaultRequestHeaders.Add("Host", "portalquery.just.ro");
+         httpClient = new HttpClient();
+         httpClient.DefaultRequestHeaders.Add("Host", "portalquery.just.ro");
       }
 
       internal async Task<XmlDocument> FindCaseFile(string caseFileNumber)
       {
-         using (var response = await this.PostAsync("http://portalquery.just.ro/query.asmx", this.ConstructSoapRequest(caseFileNumber)))
+         using (var response = await httpClient.PostAsync("http://portalquery.just.ro/query.asmx", this.ConstructSoapRequest(caseFileNumber)))
          {
             if(response.StatusCode == System.Net.HttpStatusCode.OK)
             {
