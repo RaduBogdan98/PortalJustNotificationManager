@@ -1,8 +1,11 @@
-﻿using System;
+﻿using PortalJustNotificationManager.Model;
+using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace PortalJustNotificationManager.API
 {
@@ -16,13 +19,14 @@ namespace PortalJustNotificationManager.API
          httpClient.DefaultRequestHeaders.Add("Host", "portalquery.just.ro");
       }
 
-      internal async Task<XmlDocument> FindCaseFile(string caseFileNumber)
+      internal async Task<Dosar> FindCaseFile(string caseFileNumber)
       {
          using (var response = await httpClient.PostAsync("http://portalquery.just.ro/query.asmx", this.ConstructSoapRequest(caseFileNumber)))
          {
             if(response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-               return await ParseHttpResponse(response);
+               string responseContent = await response.Content.ReadAsStringAsync();
+               return MapXmlResponseToCaseFile(responseContent);
             }
             else
             {
@@ -46,17 +50,20 @@ namespace PortalJustNotificationManager.API
          return new StringContent(soapEnvelope, Encoding.UTF8, "application/soap+xml");
       }
 
-      private async Task<XmlDocument> ParseHttpResponse(HttpResponseMessage response)
+      internal Dosar MapXmlResponseToCaseFile(string responseContent)
       {
-         var responseContent = await response.Content.ReadAsStringAsync();
          int caseDefinitionStart = responseContent.IndexOf("<Dosar>");
          int caseDefinitionLength = responseContent.IndexOf("</Dosar>") - caseDefinitionStart + 8;
          responseContent = responseContent.Substring(caseDefinitionStart, caseDefinitionLength);
 
-         XmlDocument responseXml = new XmlDocument();
-         responseXml.LoadXml(responseContent);
+         XmlSerializer serializer = new XmlSerializer(typeof(Dosar));
+         Dosar result;
+         using (TextReader reader = new StringReader(responseContent))
+         {
+            result = (Dosar)serializer.Deserialize(reader);
+         }
 
-         return responseXml;
+         return result;
       }
    }
 }
