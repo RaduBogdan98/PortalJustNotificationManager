@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace PortalJustNotificationManager.Model
 {
-   class Parte
+   [XmlRoot("DosarParte")]
+   public class Parte
    {
-      internal string Nume { get; set; }
-      internal string Calitate { get; set; }
+      [XmlElement("nume")]
+      public string Nume { get; set; }
+
+      [XmlElement("calitateParte")]
+      public string Calitate { get; set; }
+
+      public Parte() { }
 
       public Parte(string nume, string calitate)
       {

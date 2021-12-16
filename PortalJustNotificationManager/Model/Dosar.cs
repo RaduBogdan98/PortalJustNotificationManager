@@ -1,19 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace PortalJustNotificationManager.Model
 {
-   class Dosar
+   [XmlRoot("Dosar")]
+   public class Dosar
    {
-      private string numar;
-      private DateTime data;
-      private string institutie;
-      private string departament;
-      private string categorieCaz;
-      private string stadiuProcesual;
-      private string obiect;
-      private List<Parte> parti;
-      private List<Sedinta> sedinte;
+      [XmlElement("numar")]
+      public string Numar;
+
+      [XmlElement("data")]
+      public DateTime Data;
+
+      [XmlElement("institutie")]
+      public string Institutie;
+
+      [XmlElement("departament")]
+      public string Departament;
+
+      [XmlElement("categorieCazNume")]
+      public string CategorieCaz;
+
+      [XmlElement("stadiuProcesualNume")]
+      public string StadiuProcesual;
+
+      [XmlElement("obiect")]
+      public string Obiect;
+
+      [XmlArray("parti"),XmlArrayItem("DosarParte")]
+      public List<Parte> parti;
+
+      [XmlArray("sedinte"),XmlArrayItem("DosarSedinta")]
+      public List<Sedinta> sedinte;
       
+      public Dosar() { }
    }
 }

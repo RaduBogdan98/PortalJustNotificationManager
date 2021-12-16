@@ -26,7 +26,10 @@ namespace PortalJustNotificationManager
       {
          InitializeComponent();
 
-         GetCaseFile();
+         //GetCaseFile();
+
+         XmlToCaseMapper mapper = new XmlToCaseMapper();
+         mapper.MapToCaseFile(null);
       }
 
       private async void GetCaseFile()

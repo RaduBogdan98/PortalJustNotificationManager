@@ -1,14 +1,27 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace PortalJustNotificationManager.Model
 {
-   class Sedinta
+   [XmlRoot("DosarSedinta")]
+   public class Sedinta
    {
-      internal string Complet { get; set; }
-      internal DateTime Data { get; set; }
-      internal string Ora { get; set; }
-      internal string Solutie { get; set; }
-      internal string Sumar { get; set; }
+      [XmlElement("complet")]
+      public string Complet { get; set; }
+
+      [XmlElement("data")]
+      public DateTime Data { get; set; }
+
+      [XmlElement("ora")]
+      public string Ora { get; set; }
+
+      [XmlElement("solutie")]
+      public string Solutie { get; set; }
+
+      [XmlElement("solutieSumar")]
+      public string Sumar { get; set; }
+
+      public Sedinta() { }
 
       public Sedinta(string complet, DateTime data, string ora)
       {
