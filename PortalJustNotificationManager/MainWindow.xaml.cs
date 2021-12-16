@@ -1,4 +1,5 @@
 ﻿using PortalJustNotificationManager.API;
+using PortalJustNotificationManager.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,16 +27,13 @@ namespace PortalJustNotificationManager
       {
          InitializeComponent();
 
-         //GetCaseFile();
-
-         DataMapper mapper = new DataMapper();
-         mapper.MapXmlResponseToCaseFile(null);
+         GetCaseFile();
       }
 
       private async void GetCaseFile()
       {
          PortalJustHttpClient httpClient = new PortalJustHttpClient();
-         XmlDocument doc = await httpClient.FindCaseFile("1904/3/2018/a1");
+         Dosar doc = await httpClient.FindCaseFile("1904/3/2018/a1");
       }
    }
 }
