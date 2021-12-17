@@ -1,19 +1,6 @@
 ﻿using PortalJustNotificationManager.API;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PortalJustNotificationManager.Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml;
 
 namespace PortalJustNotificationManager
 {
@@ -32,7 +19,9 @@ namespace PortalJustNotificationManager
       private async void GetCaseFile()
       {
          PortalJustHttpClient httpClient = new PortalJustHttpClient();
-         XmlDocument doc = await httpClient.FindCaseFile("1904/3/2018/a1");
+         CaseFile case1 = await httpClient.FindCaseFile("1904/3/2018/a1");
+         CaseFile case2 = await httpClient.FindCaseFile("1904/3/2018/a1");
+         case1.CompareTo(case2);
       }
    }
 }
