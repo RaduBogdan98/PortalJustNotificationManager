@@ -1,4 +1,4 @@
-﻿namespace PortalJustNotificationManager
+﻿namespace PortalJustNotificationManager.Model
 {
    class Notification
    {

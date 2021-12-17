@@ -4,7 +4,6 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace PortalJustNotificationManager.API
@@ -19,7 +18,7 @@ namespace PortalJustNotificationManager.API
          httpClient.DefaultRequestHeaders.Add("Host", "portalquery.just.ro");
       }
 
-      internal async Task<Dosar> FindCaseFile(string caseFileNumber)
+      internal async Task<CaseFile> FindCaseFile(string caseFileNumber)
       {
          using (var response = await httpClient.PostAsync("http://portalquery.just.ro/query.asmx", this.ConstructSoapRequest(caseFileNumber)))
          {
@@ -50,17 +49,17 @@ namespace PortalJustNotificationManager.API
          return new StringContent(soapEnvelope, Encoding.UTF8, "application/soap+xml");
       }
 
-      internal Dosar MapXmlResponseToCaseFile(string responseContent)
+      internal CaseFile MapXmlResponseToCaseFile(string responseContent)
       {
          int caseDefinitionStart = responseContent.IndexOf("<Dosar>");
          int caseDefinitionLength = responseContent.IndexOf("</Dosar>") - caseDefinitionStart + 8;
          responseContent = responseContent.Substring(caseDefinitionStart, caseDefinitionLength);
 
-         XmlSerializer serializer = new XmlSerializer(typeof(Dosar));
-         Dosar result;
+         XmlSerializer serializer = new XmlSerializer(typeof(CaseFile));
+         CaseFile result;
          using (TextReader reader = new StringReader(responseContent))
          {
-            result = (Dosar)serializer.Deserialize(reader);
+            result = (CaseFile)serializer.Deserialize(reader);
          }
 
          return result;
