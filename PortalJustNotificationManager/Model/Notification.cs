@@ -2,8 +2,8 @@
 {
    class Notification
    {
-      internal string Title { get; }
-      internal string Description { get; }
+      public string Title { get; }
+      public string Description { get; }
 
       public Notification(string title, string description)
       {

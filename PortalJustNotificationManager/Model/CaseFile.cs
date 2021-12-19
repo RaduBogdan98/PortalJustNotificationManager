@@ -9,7 +9,7 @@ namespace PortalJustNotificationManager.Model
    public class CaseFile
    {
       [XmlElement("numar")]
-      public string Number;
+      public string Number { get; set; }
 
       [XmlElement("data")]
       public DateTime Date;
@@ -36,7 +36,7 @@ namespace PortalJustNotificationManager.Model
       public List<Meeting> Meetings;
 
       [XmlArray("caiAtac"), XmlArrayItem("DosarCaleAtac")]
-      public List<AttackWay> AttackWays;
+      public List<AttackWay> CaseAttackWays;
 
       public CaseFile() { }
 
@@ -45,6 +45,38 @@ namespace PortalJustNotificationManager.Model
          return obj is CaseFile dosar &&
                 Number == dosar.Number &&
                 Date == dosar.Date;
+      }
+
+      public override string ToString()
+      {
+         string description = 
+               "Numar dosar: " + Number +
+                "\nData: " + Date +
+                "\nInstitutie: " + Institution +
+                "\nDepartament: " + Department +
+                "\nCategorie Caz: " + CaseCategory +
+                "\nStadiu Procesual: " + ProcessStage +
+                "\nObiect: " + CaseObject +
+                "\n\nParti: ";
+
+         foreach(Side s in Sides)
+         {
+            description += "\n\t" + s.ToString();
+         }
+
+         description += "\n\nCai de Atac:";
+         foreach(AttackWay a in CaseAttackWays)
+         {
+            description += "\n\t" + a.ToString();
+         }
+
+         description += "\n\nSedinte:\n";
+         foreach (Meeting m in Meetings)
+         {
+            description += "\n" + m.ToString();
+         }
+
+         return description;
       }
 
       internal void CompareTo(CaseFile caseFile, CaseHandler parentHandler)
@@ -81,7 +113,7 @@ namespace PortalJustNotificationManager.Model
                parentHandler.CaseNotifications.Add(new Notification("Obiect Schimbat", "Obiectul cazului a fost schimbat cu: " + caseFile.CaseObject));
             }
 
-            CompareAtackWays(caseFile.AttackWays, parentHandler);
+            CompareAtackWays(caseFile.CaseAttackWays, parentHandler);
             CompareCaseSides(caseFile.Sides, parentHandler);
             CompareMeetings(caseFile.Meetings, parentHandler);
          }
@@ -127,14 +159,14 @@ namespace PortalJustNotificationManager.Model
       {
          attackWays.ForEach(x =>
          {
-            AttackWay equivalentWay = AttackWays.Find(y => y.Equals(x));
+            AttackWay equivalentWay = CaseAttackWays.Find(y => y.Equals(x));
             if (equivalentWay != null)
             {
                equivalentWay.CompareTo(x, parentHandler);
             }
          });
 
-         List<AttackWay> newAttackWays = attackWays.Where(x => AttackWays.Contains(x) == false).ToList();
+         List<AttackWay> newAttackWays = attackWays.Where(x => CaseAttackWays.Contains(x) == false).ToList();
          foreach (AttackWay attackWay in newAttackWays)
          {
             parentHandler.CaseNotifications.Add(new Notification("Cale de Atac Noua Adaugata", attackWay.ToString()));

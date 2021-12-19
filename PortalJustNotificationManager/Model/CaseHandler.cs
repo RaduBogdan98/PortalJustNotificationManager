@@ -6,19 +6,21 @@ namespace PortalJustNotificationManager.Model
 {
    class CaseHandler : INotifyPropertyChanged
    {
+      private bool hasNotifications;
       private ObservableCollection<Notification> caseNotifications;
 
       public CaseHandler(string name, CaseFile caseFile)
       {
-         this.Name = name;
+         this.HandlerName = name;
          this.CaseFile = caseFile;
          this.caseNotifications = new ObservableCollection<Notification>();
+         this.HasNotifications = false;
       }
 
-      internal string Name { get; set; }
-      internal CaseFile CaseFile { get; set; }
+      public string HandlerName { get; set; }
+      public CaseFile CaseFile { get; set; }
 
-      internal ObservableCollection<Notification> CaseNotifications
+      public ObservableCollection<Notification> CaseNotifications
       {
          get
          {
@@ -31,11 +33,16 @@ namespace PortalJustNotificationManager.Model
          }
       }
 
-      internal bool HasNotifications
+      public bool HasNotifications
       {
          get
          {
-            return caseNotifications != null && caseNotifications.Count > 0;
+            return hasNotifications;
+         }
+         set
+         {
+            hasNotifications = value;
+            NotifyPropertyChanged(nameof(HasNotifications));
          }
       }
 

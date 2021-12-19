@@ -7,6 +7,138 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="75*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                x:Name="AddButton"
+                Background="LimeGreen"      
+                Click="AddButton_Click"
+                Margin="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal" Margin="2">
+                        <TextBlock Text="Adauga " Foreground="White" 
+                               VerticalAlignment="Center"
+                               FontSize="14"/>
+                        <Image Source="Resources/add_36.png" Height="20"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
+            <Button
+                Grid.Column="1"
+                x:Name="DeleteButton"
+                Background="OrangeRed"      
+                Click="AddButton_Click"
+                Margin="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Sterge " Foreground="White" 
+                               VerticalAlignment="Center"
+                               FontSize="14"/>
+                        <Image Source="Resources/delete_36.png" Height="20"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            
+        </Grid>
+
+        <ListView Grid.Row="1" Grid.Column="0"
+                  x:Name="HandlersList"
+                  ItemsSource="{Binding CaseHandlers, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <EventSetter Event="Selected" Handler="ListViewItem_Selected"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding HandlerName}" 
+                                   HorizontalAlignment="Left"
+                                   FontWeight="Bold"
+                                   FontSize="15"
+                                   Grid.Row="0"
+                                   Grid.Column="0"/>
+
+                        <TextBlock Text="{Binding CaseFile.Number}"
+                                   HorizontalAlignment="Left"
+                                   FontSize="12"
+                                   Grid.Row="1"
+                                   Grid.Column="0"/>
+
+                        <Border Background="Red" 
+                                CornerRadius="999" 
+                                Padding="4"
+                                Grid.Column="1"
+                                Grid.RowSpan="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasNotifications, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding HasNotifications, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView ItemsSource="{Binding SelectedCaseHandler.CaseNotifications, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.RowSpan="2" Grid.Column="1"
+                  Background="AliceBlue">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="LightSkyBlue"
+                            Background="White"
+                            BorderThickness="2"
+                            CornerRadius="15">
+                        <Expander Margin="5">
+                            <Expander.Header>
+                                <TextBlock Text="{Binding Title}"/>
+                            </Expander.Header>
+                            <Expander.Content>
+                                <TextBlock Text="{Binding Description}" Margin="10"/>
+                            </Expander.Content>
+                        </Expander>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

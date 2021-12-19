@@ -28,8 +28,23 @@ namespace PortalJustNotificationManager.Model
          Complet = complet;
          Date = data;
          Hour = ora;
-         Solution = "";
-         Summary = "";
+      }
+
+      public override string ToString()
+      {
+         string description = Date + "\n" + Hour;
+
+         if (!String.IsNullOrEmpty(Solution))
+         {
+            description += "\nSolutie:\n" + Solution;
+         }
+
+         if (!String.IsNullOrEmpty(Summary))
+         {
+            description += "\nSumar:\n" + Summary;
+         }
+
+         return description;
       }
 
       public override bool Equals(object obj)
