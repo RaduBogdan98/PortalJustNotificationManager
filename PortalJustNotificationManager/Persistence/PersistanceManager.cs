@@ -24,18 +24,18 @@ namespace PortalJustNotificationManager.Persistence
                File.WriteAllBytes(filePath, this.Encrypt(stream.ToArray()));
                File.SetAttributes(filePath, FileAttributes.Hidden);
             }
-            catch (SerializationException)
+            catch (Exception e)
             {
-               Console.WriteLine("Serializarea a esuat.");
+               
             }
          }
       }
 
-      internal T Deserialize(string xmlFilePath)
+      internal T Deserialize(string filePath)
       {
-         if (File.Exists(xmlFilePath))
+         if (File.Exists(filePath))
          {
-            using (MemoryStream stream = new MemoryStream(Decrypt(File.ReadAllBytes(xmlFilePath))))
+            using (MemoryStream stream = new MemoryStream(Decrypt(File.ReadAllBytes(filePath))))
             {
                // Construct a BinaryFormatter and use it to serialize the data to the stream.
                XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -43,9 +43,8 @@ namespace PortalJustNotificationManager.Persistence
                {
                   return (T)serializer.Deserialize(stream);
                }
-               catch (Exception)
+               catch (Exception e)
                {
-                  Console.WriteLine("Serializarea a esuat.");
                   return default;
                }
             }

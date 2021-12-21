@@ -144,6 +144,7 @@ namespace PortalJustNotificationManager.Model
          foreach(Meeting meeting in newMeetings)
          {
             parentHandler.AddNotification(new Notification("Sedinta Noua Adaugata", meeting.ToString()));
+            this.Meetings.Add(meeting);
          }
       }
 
@@ -162,6 +163,7 @@ namespace PortalJustNotificationManager.Model
          foreach (Side side in newSides)
          {
             parentHandler.AddNotification(new Notification("Parte Noua Adaugata", side.ToString()));
+            this.Sides.Add(side);
          }
       }
 
@@ -180,6 +182,7 @@ namespace PortalJustNotificationManager.Model
          foreach (AttackWay attackWay in newAttackWays)
          {
             parentHandler.AddNotification(new Notification("Cale de Atac Noua Adaugata", attackWay.ToString()));
+            this.CaseAttackWays.Add(attackWay);
          }
       }
    }

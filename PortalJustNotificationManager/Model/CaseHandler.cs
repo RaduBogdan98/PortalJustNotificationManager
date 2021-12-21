@@ -74,12 +74,15 @@ namespace PortalJustNotificationManager.Model
 
       internal void AddNotification(Notification newNotification)
       {
-         if(HasNotifications == false)
+         if (HasNotifications == false)
          {
             HasNotifications = true;
          }
 
-         this.CaseNotifications.Add(newNotification);
+         System.Windows.Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
+         {
+            this.CaseNotifications.Insert(0, newNotification);
+         });
       }
       #endregion
 

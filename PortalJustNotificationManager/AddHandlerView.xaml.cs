@@ -21,13 +21,13 @@ namespace PortalJustNotificationManager
          {
             CaseFile retrievedCaseFile = await httpClient.FindCaseFile(caseFileNumber);
             RetrievedCaseHandler = new CaseHandler(this.HandlerNameTextBox.Text, retrievedCaseFile);
-            RetrievedCaseHandler.AddNotification(new Notification("Statut Curent", retrievedCaseFile.ToString()));
+            RetrievedCaseHandler.AddNotification(new Notification("Status Curent", retrievedCaseFile.ToString()));
 
             this.DialogResult = true;
          }
          catch(Exception)
          {
-            MessageBox.Show("Eroare: Numarul dosarului nu exista!");
+            MessageBox.Show("Eroare de la server! Este posibil ca numarul dosarului sa fie gresit.");
          }      
       }
 

@@ -66,7 +66,6 @@
                         </Style>
                     </Button.Style>
                 </Button>
-
             </Grid>
 
             <ListView Grid.Row="1" SelectionMode="Single"
@@ -80,34 +79,49 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="5">
+                        <Grid Margin="0 5 5 5">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="10"/>
                             </Grid.ColumnDefinitions>
 
+                            <Button Grid.RowSpan="2"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Click="Info_Click">
+                                <Button.Content>
+                                    <Image Source="Resources/info.png"/>
+                                </Button.Content>
+                            </Button>
+                            
+
                             <TextBlock Text="{Binding HandlerName}"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Left"
+                                   Margin="10 0 0 0"
                                    FontWeight="Bold"
                                    FontSize="15"
                                    Grid.Row="0"
-                                   Grid.Column="0"/>
+                                   Grid.Column="1"/>
 
                             <TextBlock Text="{Binding CaseFile.Number}"
                                    HorizontalAlignment="Left"
+                                   Margin="5 0 0 0"
                                    FontSize="12"
                                    Grid.Row="1"
-                                   Grid.Column="0"/>
+                                   Grid.Column="1"/>
 
                             <Border Background="Red" 
                                 CornerRadius="999" 
                                 Padding="4"
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 Grid.RowSpan="2"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
@@ -154,7 +168,8 @@
                             Background="White"
                             BorderThickness="2"
                             CornerRadius="15">
-                            <Expander Margin="5">
+                            <Expander Margin="5"
+                                      Expanded="Expander_Expanded">
                                 <Expander.Header>
                                     <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
                                 </Expander.Header>

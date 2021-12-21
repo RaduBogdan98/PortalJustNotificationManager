@@ -32,7 +32,7 @@ namespace PortalJustNotificationManager.Model
 
       public override string ToString()
       {
-         string description = Date.Day + "." + Date.Month + "." + Date.Year + "\n" + Hour;
+         string description = "Data: " + Date.Day + "." + Date.Month + "." + Date.Year + "\n" + "Ora: " + Hour;
 
          if (!String.IsNullOrEmpty(Solution))
          {
@@ -62,13 +62,13 @@ namespace PortalJustNotificationManager.Model
             if (Solution != meeting.Solution)
             {
                Solution = meeting.Solution;
-               parentHandler.AddNotification(new Notification("Solutie Adaugata", "O solutie fost adaugata sedintei din data de " + Date + " ora " + Hour + ", iar aceasta este: " + Solution));
+               parentHandler.AddNotification(new Notification("Solutie Sedinta Schimbata", "O solutie fost adaugata sedintei din data de " + Date + " ora " + Hour + ", iar aceasta este: " + Solution));
             }
 
             if (Summary != meeting.Summary)
             {
                Summary = meeting.Summary;
-               parentHandler.AddNotification(new Notification("Sumar Adaugat", "Un sumar fost adaugata sedintei din data de " + Date + " ora " + Hour + ", iar acesta este: " + Summary));
+               parentHandler.AddNotification(new Notification("Sumar Sedinta Schimbat", "Un sumar fost adaugata sedintei din data de " + Date + " ora " + Hour + ", iar acesta este: " + Summary));
             }
          }
       }

@@ -1,6 +1,7 @@
 ﻿using PortalJustNotificationManager.API;
 using PortalJustNotificationManager.Model;
 using PortalJustNotificationManager.Persistence;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -10,19 +11,31 @@ namespace PortalJustNotificationManager
 {
    class MainWindowViewModel : INotifyPropertyChanged
    {
+      private static MainWindowViewModel instance;
+
       private ObservableCollection<CaseHandler> caseHandlers;
       private CaseHandler selectedCaseHandler;
-      private PortalJustHttpClient httpClient;
-      internal PersistanceManager<ObservableCollection<CaseHandler>> persistanceManager;
+      internal PortalJustHttpClient httpClient;
+      internal PersistanceManager<ObservableCollection<CaseHandler>> persistanceManager;     
 
-      public MainWindowViewModel()
+      private MainWindowViewModel()
       {
-         persistanceManager = new PersistanceManager<ObservableCollection<CaseHandler>>();
-         ObservableCollection<CaseHandler> persistedCaseHandlers = persistanceManager.Deserialize("data.bin");
+         this.persistanceManager = new PersistanceManager<ObservableCollection<CaseHandler>>();
+         ObservableCollection<CaseHandler> persistedCaseHandlers = persistanceManager.Deserialize(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\portal_data.bin");
          this.caseHandlers = persistedCaseHandlers!=null? persistedCaseHandlers : new ObservableCollection<CaseHandler>();
 
          this.httpClient = new PortalJustHttpClient();
          this.RunNotificationRetrievingBackgroundWorker();
+      }
+
+      internal static MainWindowViewModel GetInstance()
+      {
+         if (instance == null)
+         {
+            instance = new MainWindowViewModel();
+         }
+
+         return instance;
       }
 
       #region Background Worker
@@ -30,8 +43,10 @@ namespace PortalJustNotificationManager
 
       private void RunNotificationRetrievingBackgroundWorker()
       {
+         TestClass test = new TestClass();
+
          this.getCaseNotificationsWorker = new BackgroundWorker();
-         this.getCaseNotificationsWorker.DoWork += (o, ea) => this.RunCaseUpdaterOnTimer();
+         this.getCaseNotificationsWorker.DoWork += (o, ea) => test.Test();
          this.getCaseNotificationsWorker.RunWorkerAsync();
       }
 
@@ -42,7 +57,7 @@ namespace PortalJustNotificationManager
             if (caseHandlers.Count > 0)
             {
                UpdateCaseFiles();
-               Thread.Sleep(3600000);
+               Thread.Sleep(1800000);
             }
          }
       }
@@ -54,7 +69,6 @@ namespace PortalJustNotificationManager
             caseHandler.UpdateCase(httpClient);
          }
       }
-
       #endregion
 
       #region Properties
