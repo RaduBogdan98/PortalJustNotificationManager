@@ -1,7 +1,10 @@
-﻿using PortalJustNotificationManager.Model;
+﻿using PortalJustNotificationManager.API;
+using PortalJustNotificationManager.Model;
+using PortalJustNotificationManager.Persistence;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace PortalJustNotificationManager
 {
@@ -9,25 +12,52 @@ namespace PortalJustNotificationManager
    {
       private ObservableCollection<CaseHandler> caseHandlers;
       private CaseHandler selectedCaseHandler;
+      private PortalJustHttpClient httpClient;
+      internal PersistanceManager<ObservableCollection<CaseHandler>> persistanceManager;
 
       public MainWindowViewModel()
       {
-         this.caseHandlers = new ObservableCollection<CaseHandler>();
-         CaseFile caseFile = new CaseFile();
-         caseFile.Number = "1234/12/12";
-         CaseHandler handler1 = new CaseHandler("CaseHandler1", caseFile);
-         CaseHandler handler2 = new CaseHandler("CaseHandler2", caseFile);
-         handler1.HasNotifications = true;
-         handler2.HasNotifications = true;
+         persistanceManager = new PersistanceManager<ObservableCollection<CaseHandler>>();
+         ObservableCollection<CaseHandler> persistedCaseHandlers = persistanceManager.Deserialize("data.bin");
+         this.caseHandlers = persistedCaseHandlers!=null? persistedCaseHandlers : new ObservableCollection<CaseHandler>();
 
-         handler1.CaseNotifications.Add(new Notification("Notificare 1", "Descrierea acestei notificari este aceasta: Notificare 1"));
-         handler2.CaseNotifications.Add(new Notification("Notificare 2", "Descrierea acestei notificari este aceasta: Notificare 2"));
-         handler2.CaseNotifications.Add(new Notification("Notificare 2", "Descrierea\n acestei\n notificari\n este\n aceasta:\n Notificare 2"));
-
-         caseHandlers.Add(handler1);
-         caseHandlers.Add(handler2);
+         this.httpClient = new PortalJustHttpClient();
+         this.RunNotificationRetrievingBackgroundWorker();
       }
 
+      #region Background Worker
+      private BackgroundWorker getCaseNotificationsWorker;
+
+      private void RunNotificationRetrievingBackgroundWorker()
+      {
+         this.getCaseNotificationsWorker = new BackgroundWorker();
+         this.getCaseNotificationsWorker.DoWork += (o, ea) => this.RunCaseUpdaterOnTimer();
+         this.getCaseNotificationsWorker.RunWorkerAsync();
+      }
+
+      private void RunCaseUpdaterOnTimer()
+      {
+         while (true)
+         {
+            if (caseHandlers.Count > 0)
+            {
+               UpdateCaseFiles();
+               Thread.Sleep(3600000);
+            }
+         }
+      }
+
+      private void UpdateCaseFiles()
+      {
+         foreach (var caseHandler in CaseHandlers)
+         {
+            caseHandler.UpdateCase(httpClient);
+         }
+      }
+
+      #endregion
+
+      #region Properties
       public ObservableCollection<CaseHandler> CaseHandlers
       {
          get
@@ -40,7 +70,7 @@ namespace PortalJustNotificationManager
             NotifyPropertyChanged(nameof(CaseHandlers));
          }
       }
-      
+
       public CaseHandler SelectedCaseHandler
       {
          get
@@ -50,10 +80,24 @@ namespace PortalJustNotificationManager
          set
          {
             selectedCaseHandler = value;
-            selectedCaseHandler.HasNotifications = false;
+            if (selectedCaseHandler != null)
+            {
+               selectedCaseHandler.HasNotifications = false;
+            }
+
             NotifyPropertyChanged(nameof(SelectedCaseHandler));
+            NotifyPropertyChanged(nameof(IsAnythingSelected));
          }
       }
+
+      public bool IsAnythingSelected
+      {
+         get
+         {
+            return this.SelectedCaseHandler != null && this.CaseHandlers.Count > 0;
+         }
+      }
+      #endregion
 
       #region PropertyChanged
       public event PropertyChangedEventHandler PropertyChanged;

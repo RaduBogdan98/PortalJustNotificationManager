@@ -49,31 +49,41 @@ namespace PortalJustNotificationManager.Model
 
       public override string ToString()
       {
-         string description = 
+         string description =
                "Numar dosar: " + Number +
-                "\nData: " + Date +
+                "\nData: " + Date.Day + "." + Date.Month + "." + Date.Year +
                 "\nInstitutie: " + Institution +
                 "\nDepartament: " + Department +
                 "\nCategorie Caz: " + CaseCategory +
                 "\nStadiu Procesual: " + ProcessStage +
-                "\nObiect: " + CaseObject +
-                "\n\nParti: ";
+                "\nObiect: " + CaseObject;
 
-         foreach(Side s in Sides)
+         if (Sides.Count > 0)
          {
-            description += "\n\t" + s.ToString();
+            description += "\n\nParti:\n________________________________________________________________";
+
+            foreach (Side s in Sides)
+            {
+               description += "\n" + s.ToString();
+            }
          }
 
-         description += "\n\nCai de Atac:";
-         foreach(AttackWay a in CaseAttackWays)
+         if (CaseAttackWays.Count > 0)
          {
-            description += "\n\t" + a.ToString();
+            description += "\n\nCai de Atac:\n________________________________________________________________";
+            foreach (AttackWay a in CaseAttackWays)
+            {
+               description += "\n" + a.ToString();
+            }
          }
 
-         description += "\n\nSedinte:\n";
-         foreach (Meeting m in Meetings)
+         if (Meetings.Count > 0)
          {
-            description += "\n" + m.ToString();
+            description += "\n\nSedinte:\n________________________________________________________________";
+            foreach (Meeting m in Meetings)
+            {
+               description += "\n" + m.ToString();
+            }
          }
 
          return description;
@@ -86,31 +96,31 @@ namespace PortalJustNotificationManager.Model
             if (Institution != caseFile.Institution)
             {
                Institution = caseFile.Institution;
-               parentHandler.CaseNotifications.Add(new Notification("Institutie Schimbata", "Institutia cazului a fost schimbata cu: " + caseFile.Institution));
+               parentHandler.AddNotification(new Notification("Institutie Schimbata", "Institutia cazului a fost schimbata cu: " + caseFile.Institution));
             }
 
             if (Department != caseFile.Department)
             {
                Department = caseFile.Department;
-               parentHandler.CaseNotifications.Add(new Notification("Departament Schimbat", "Departamentul a fost schimbata cu: " + caseFile.Department));
+               parentHandler.AddNotification(new Notification("Departament Schimbat", "Departamentul a fost schimbata cu: " + caseFile.Department));
             }
 
             if (CaseCategory != caseFile.CaseCategory)
             {
                CaseCategory = caseFile.CaseCategory;
-               parentHandler.CaseNotifications.Add(new Notification("Categoria Cazului Schimbata", "Categoria cazului a fost schimbata cu: " + caseFile.CaseCategory));
+               parentHandler.AddNotification(new Notification("Categoria Cazului Schimbata", "Categoria cazului a fost schimbata cu: " + caseFile.CaseCategory));
             }
 
             if (ProcessStage != caseFile.ProcessStage)
             {
                ProcessStage = caseFile.ProcessStage;
-               parentHandler.CaseNotifications.Add(new Notification("Stadiu Procesual Schimbat", "Stadiul procesual al cazului a fost schimbat cu: " + caseFile.ProcessStage));
+               parentHandler.AddNotification(new Notification("Stadiu Procesual Schimbat", "Stadiul procesual al cazului a fost schimbat cu: " + caseFile.ProcessStage));
             }
 
             if (CaseObject != caseFile.CaseObject)
             {
                CaseObject = caseFile.CaseObject;
-               parentHandler.CaseNotifications.Add(new Notification("Obiect Schimbat", "Obiectul cazului a fost schimbat cu: " + caseFile.CaseObject));
+               parentHandler.AddNotification(new Notification("Obiect Schimbat", "Obiectul cazului a fost schimbat cu: " + caseFile.CaseObject));
             }
 
             CompareAtackWays(caseFile.CaseAttackWays, parentHandler);
@@ -133,7 +143,7 @@ namespace PortalJustNotificationManager.Model
          List<Meeting> newMeetings = meetings.Where(x => Meetings.Contains(x) == false).ToList();
          foreach(Meeting meeting in newMeetings)
          {
-            parentHandler.CaseNotifications.Add(new Notification("Sedinta Noua Adaugata", meeting.ToString()));
+            parentHandler.AddNotification(new Notification("Sedinta Noua Adaugata", meeting.ToString()));
          }
       }
 
@@ -151,7 +161,7 @@ namespace PortalJustNotificationManager.Model
          List<Side> newSides = sides.Where(x => Sides.Contains(x) == false).ToList();
          foreach (Side side in newSides)
          {
-            parentHandler.CaseNotifications.Add(new Notification("Parte Noua Adaugata", side.ToString()));
+            parentHandler.AddNotification(new Notification("Parte Noua Adaugata", side.ToString()));
          }
       }
 
@@ -169,7 +179,7 @@ namespace PortalJustNotificationManager.Model
          List<AttackWay> newAttackWays = attackWays.Where(x => CaseAttackWays.Contains(x) == false).ToList();
          foreach (AttackWay attackWay in newAttackWays)
          {
-            parentHandler.CaseNotifications.Add(new Notification("Cale de Atac Noua Adaugata", attackWay.ToString()));
+            parentHandler.AddNotification(new Notification("Cale de Atac Noua Adaugata", attackWay.ToString()));
          }
       }
    }

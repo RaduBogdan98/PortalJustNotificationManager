@@ -1,9 +1,16 @@
-﻿namespace PortalJustNotificationManager.Model
+﻿using System.Xml.Serialization;
+
+namespace PortalJustNotificationManager.Model
 {
-   class Notification
+   [XmlRoot("Notificare")]
+   public class Notification
    {
-      public string Title { get; }
-      public string Description { get; }
+      [XmlElement("titlu")]
+      public string Title { get; set; }
+      [XmlElement("descriere")]
+      public string Description { get; set; }
+
+      public Notification() { }
 
       public Notification(string title, string description)
       {

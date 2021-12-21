@@ -1,7 +1,9 @@
 ﻿using PortalJustNotificationManager.API;
 using PortalJustNotificationManager.Model;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
+using PortalJustNotificationManager.Persistence;
+using System.Collections.ObjectModel;
 
 namespace PortalJustNotificationManager
 {
@@ -16,22 +18,11 @@ namespace PortalJustNotificationManager
       {
          InitializeComponent();
          this.DataContext = viewModel = new MainWindowViewModel();
-
-         GetCaseFile();
       }
 
-      private async void GetCaseFile()
+      protected override void OnClosing(CancelEventArgs e)
       {
-         PortalJustHttpClient httpClient = new PortalJustHttpClient();
-         CaseFile case1 = await httpClient.FindCaseFile("1904/3/2018/a1");
-         CaseFile case2 = await httpClient.FindCaseFile("1904/3/2018/a1");
-         
-      }
-
-      private void ListViewItem_Selected(object sender, RoutedEventArgs e)
-      {
-         CaseHandler selectedHandler = ((ListViewItem)sender).DataContext as CaseHandler;
-         viewModel.SelectedCaseHandler = selectedHandler;
+         viewModel.persistanceManager.Serialize("data.bin", viewModel.CaseHandlers);
       }
 
       private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -41,6 +32,11 @@ namespace PortalJustNotificationManager
          {
             viewModel.CaseHandlers.Add(view.RetrievedCaseHandler);
          }
+      }
+
+      private void DeleteButton_Click(object sender, RoutedEventArgs e)
+      {
+         viewModel.CaseHandlers.Remove(viewModel.SelectedCaseHandler);
       }
    }
 }

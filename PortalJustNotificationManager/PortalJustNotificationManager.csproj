@@ -4,16 +4,19 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>appicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\add_36.ico" />
     <None Remove="Resources\add_36.png" />
+    <None Remove="Resources\appicon.ico" />
     <None Remove="Resources\delete_36.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\add_36.png" />
+    <Resource Include="Resources\appicon.ico" />
     <Resource Include="Resources\delete_36.png" />
   </ItemGroup>
 

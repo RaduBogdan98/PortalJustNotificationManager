@@ -21,8 +21,7 @@ namespace PortalJustNotificationManager
          {
             CaseFile retrievedCaseFile = await httpClient.FindCaseFile(caseFileNumber);
             RetrievedCaseHandler = new CaseHandler(this.HandlerNameTextBox.Text, retrievedCaseFile);
-            RetrievedCaseHandler.CaseNotifications.Add(new Notification("Statut Current", retrievedCaseFile.ToString()));
-            RetrievedCaseHandler.HasNotifications = true;
+            RetrievedCaseHandler.AddNotification(new Notification("Statut Curent", retrievedCaseFile.ToString()));
 
             this.DialogResult = true;
          }

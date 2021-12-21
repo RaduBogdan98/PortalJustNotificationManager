@@ -1,10 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using PortalJustNotificationManager.API;
+using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
 
 namespace PortalJustNotificationManager.Model
 {
-   class CaseHandler : INotifyPropertyChanged
+   [XmlRoot("Handler")]
+   public class CaseHandler : INotifyPropertyChanged
    {
       private bool hasNotifications;
       private ObservableCollection<Notification> caseNotifications;
@@ -17,9 +21,15 @@ namespace PortalJustNotificationManager.Model
          this.HasNotifications = false;
       }
 
+      public CaseHandler() { }
+
+      #region Properties
+      [XmlElement("nume")]
       public string HandlerName { get; set; }
+      [XmlElement("dosar")]
       public CaseFile CaseFile { get; set; }
 
+      [XmlArray("notificari"), XmlArrayItem("Notificare")]
       public ObservableCollection<Notification> CaseNotifications
       {
          get
@@ -33,6 +43,7 @@ namespace PortalJustNotificationManager.Model
          }
       }
 
+      [XmlElement("are-notificari")]
       public bool HasNotifications
       {
          get
@@ -45,11 +56,30 @@ namespace PortalJustNotificationManager.Model
             NotifyPropertyChanged(nameof(HasNotifications));
          }
       }
+      #endregion
 
       #region Methods
-      internal void CompareCases(CaseFile caseFile)
+      internal async void UpdateCase(PortalJustHttpClient httpClient)
       {
-         this.CaseFile.CompareTo(caseFile, this);
+         try
+         {
+            CaseFile updatedCase = await httpClient.FindCaseFile(CaseFile.Number);
+            this.CaseFile.CompareTo(updatedCase, this);
+         }
+         catch (Exception)
+         {
+            // TO DO
+         }
+      }
+
+      internal void AddNotification(Notification newNotification)
+      {
+         if(HasNotifications == false)
+         {
+            HasNotifications = true;
+         }
+
+         this.CaseNotifications.Add(newNotification);
       }
       #endregion
 

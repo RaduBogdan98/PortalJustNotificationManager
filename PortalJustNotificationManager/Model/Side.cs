@@ -38,7 +38,7 @@ namespace PortalJustNotificationManager.Model
             if (Quality != side.Quality)
             {
                Quality = side.Quality;
-               parentHandler.CaseNotifications.Add(new Notification("Schimbare Calitate Parte", "Partea " + Name + " a devenit " + Quality));
+               parentHandler.AddNotification(new Notification("Schimbare Calitate Parte", "Partea " + Name + " a devenit " + Quality));
             }
          }      
       }

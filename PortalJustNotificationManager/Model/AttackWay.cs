@@ -45,7 +45,7 @@ namespace PortalJustNotificationManager.Model
                if (TypeOfAttack != attackWay.TypeOfAttack)
                {
                   TypeOfAttack = attackWay.TypeOfAttack;
-                  parentHandler.CaseNotifications.Add(new Notification("Cale De Atac Schimbata", "Partea declaratoare: " + DeclaringSide + "si-a schimbat tip caii de atac in: " + TypeOfAttack));
+                  parentHandler.AddNotification(new Notification("Cale De Atac Schimbata", "Partea declaratoare: " + DeclaringSide + "si-a schimbat tip caii de atac in: " + TypeOfAttack));
                }        
             }
          }
