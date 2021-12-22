@@ -11,7 +11,7 @@ namespace PortalJustNotificationManager.Model
    public class CaseHandler : INotifyPropertyChanged
    {
       private bool hasNotifications;
-      internal bool shouldDisplayNotificationBalloonTip = false;
+      internal bool shouldNotDisplayNotificationBalloonTip = false;
       private ObservableCollection<Notification> caseNotifications;
 
       public CaseHandler(string name, CaseFile caseFile)
@@ -54,6 +54,12 @@ namespace PortalJustNotificationManager.Model
          set
          {
             hasNotifications = value;
+
+            if(hasNotifications == false)
+            {
+               shouldNotDisplayNotificationBalloonTip = false;
+            }
+
             NotifyPropertyChanged(nameof(HasNotifications));
          }
       }
@@ -64,7 +70,7 @@ namespace PortalJustNotificationManager.Model
       {
          try
          {
-            this.shouldDisplayNotificationBalloonTip = false;
+            this.shouldNotDisplayNotificationBalloonTip = false;
             CaseFile updatedCase = await httpClient.FindCaseFile(CaseFile.Number);
             this.CaseFile.CompareTo(updatedCase, this);
          }
@@ -81,9 +87,9 @@ namespace PortalJustNotificationManager.Model
             HasNotifications = true;
          }
 
-         if(shouldDisplayNotificationBalloonTip == false)
+         if(shouldNotDisplayNotificationBalloonTip == false)
          {
-            shouldDisplayNotificationBalloonTip = true;
+            shouldNotDisplayNotificationBalloonTip = true;
             MainWindowViewModel.GetInstance().ShowToastNotification("Dosarul " + CaseFile.Number + " are notificari!");
          }
 

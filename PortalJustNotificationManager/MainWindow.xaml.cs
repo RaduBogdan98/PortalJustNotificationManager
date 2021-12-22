@@ -41,7 +41,7 @@ namespace PortalJustNotificationManager
       private void BuildNotifyIcon()
       {
          notifyIcon = new Forms.NotifyIcon();
-         notifyIcon.Text = "Portalul Notificarilor";
+         notifyIcon.Text = "Portal Notificari";
          notifyIcon.Icon = new System.Drawing.Icon("Resources/appicon.ico");
          notifyIcon.MouseClick += OnTooltipClicked;
          notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();

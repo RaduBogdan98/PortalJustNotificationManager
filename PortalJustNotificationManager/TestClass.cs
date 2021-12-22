@@ -8,20 +8,20 @@ namespace PortalJustNotificationManager
    {
       internal void Test()
       {
-         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldDisplayNotificationBalloonTip = false;
+         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldNotDisplayNotificationBalloonTip = false;
          CaseFile updatedCase = this.cloneCaseFile(MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile);
          updatedCase.Institution = "Institutia lui Radu";
          MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile.CompareTo(updatedCase, MainWindowViewModel.GetInstance().CaseHandlers[0]);
          Thread.Sleep(10000);
 
-         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldDisplayNotificationBalloonTip = false;
+         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldNotDisplayNotificationBalloonTip = false;
          updatedCase = this.cloneCaseFile(MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile);
          updatedCase.Department = "Departament nou";
          updatedCase.CaseObject = "Obiect nou";
          MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile.CompareTo(updatedCase, MainWindowViewModel.GetInstance().CaseHandlers[0]);
          Thread.Sleep(10000);
 
-         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldDisplayNotificationBalloonTip = false;
+         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldNotDisplayNotificationBalloonTip = false;
          updatedCase = this.cloneCaseFile(MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile);
          updatedCase.CaseCategory = "Categorie noua";
          updatedCase.ProcessStage = "Atac";
@@ -30,21 +30,21 @@ namespace PortalJustNotificationManager
          MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile.CompareTo(updatedCase, MainWindowViewModel.GetInstance().CaseHandlers[0]);
          Thread.Sleep(10000);
 
-         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldDisplayNotificationBalloonTip = false;
+         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldNotDisplayNotificationBalloonTip = false;
          updatedCase = this.cloneCaseFile(MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile);
          updatedCase.CaseAttackWays[0].DeclaringSide = "Radu";
          updatedCase.Meetings.Add(new Meeting("Complet Timisoara", new DateTime(), "09:00"));
          MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile.CompareTo(updatedCase, MainWindowViewModel.GetInstance().CaseHandlers[0]);
          Thread.Sleep(10000);
 
-         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldDisplayNotificationBalloonTip = false;
+         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldNotDisplayNotificationBalloonTip = false;
          updatedCase = this.cloneCaseFile(MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile);
          updatedCase.Sides[0].Quality = "Calitate noua";
          updatedCase.Sides.Add(new Side("Ionica", "Inculpat"));
          MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile.CompareTo(updatedCase, MainWindowViewModel.GetInstance().CaseHandlers[0]);
          Thread.Sleep(10000);
 
-         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldDisplayNotificationBalloonTip = false;
+         MainWindowViewModel.GetInstance().CaseHandlers[0].shouldNotDisplayNotificationBalloonTip = false;
          updatedCase = this.cloneCaseFile(MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile);
          updatedCase.CaseAttackWays.Add(new AttackWay(new DateTime(), "Ionica", "Apel"));
          MainWindowViewModel.GetInstance().CaseHandlers[0].CaseFile.CompareTo(updatedCase, MainWindowViewModel.GetInstance().CaseHandlers[0]);

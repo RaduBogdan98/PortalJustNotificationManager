@@ -34,6 +34,7 @@ Source: ".\PortalJustNotificationManager\bin\Release\net5.0-windows\{#MyAppName}
 Source: ".\PortalJustNotificationManager\bin\Release\net5.0-windows\{#MyAppName}.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\PortalJustNotificationManager\bin\Release\net5.0-windows\{#MyAppName}.runtimeconfig.dev.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\PortalJustNotificationManager\bin\Release\net5.0-windows\{#MyAppName}.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\PortalJustNotificationManager\bin\Release\net5.0-windows\Resources\appicon.ico"; DestDir: "{app}\Resources"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
