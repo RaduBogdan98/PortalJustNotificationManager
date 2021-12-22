@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
@@ -11,7 +12,6 @@
   <ItemGroup>
     <None Remove="Resources\add_36.ico" />
     <None Remove="Resources\add_36.png" />
-    <None Remove="Resources\appicon.ico" />
     <None Remove="Resources\appicon_large.ico" />
     <None Remove="Resources\delete_36.png" />
     <None Remove="Resources\info.png" />
@@ -20,10 +20,15 @@
 
   <ItemGroup>
     <Resource Include="Resources\add_36.png" />
-    <Resource Include="Resources\appicon.ico" />
     <Resource Include="Resources\appicon_large.ico" />
     <Resource Include="Resources\delete_36.png" />
     <Resource Include="Resources\info.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\appicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

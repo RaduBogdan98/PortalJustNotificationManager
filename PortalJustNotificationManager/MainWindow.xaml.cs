@@ -3,27 +3,82 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using Forms = System.Windows.Forms;
 
 namespace PortalJustNotificationManager
 {
-   /// <summary>
-   /// Interaction logic for MainWindow.xaml
-   /// </summary>
    public partial class MainWindow : Window
    {
-      MainWindowViewModel viewModel;
+      private MainWindowViewModel viewModel;
+      private Forms.NotifyIcon notifyIcon;
 
       public MainWindow()
       {
          InitializeComponent();
+         BuildNotifyIcon();
          this.DataContext = viewModel = MainWindowViewModel.GetInstance();
+         viewModel.ShowNotificationEvent += OnShowNotification;       
+      }
+
+      #region Methods
+      protected override void OnStateChanged(EventArgs e)
+      {
+         if (this.WindowState == WindowState.Minimized)
+         {
+            this.Hide();
+         }
+
+         base.OnStateChanged(e);
       }
 
       protected override void OnClosing(CancelEventArgs e)
       {
          viewModel.persistanceManager.Serialize(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\portal_data.bin", viewModel.CaseHandlers);
+         notifyIcon.Dispose();
       }
 
+      #region Notify Icon
+      private void BuildNotifyIcon()
+      {
+         notifyIcon = new Forms.NotifyIcon();
+         notifyIcon.Text = "Portalul Notificarilor";
+         notifyIcon.Icon = new System.Drawing.Icon("Resources/appicon.ico");
+         notifyIcon.MouseClick += OnTooltipClicked;
+         notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
+         notifyIcon.ContextMenuStrip.Items.Add("Open", null, OnOpenClicked);
+         notifyIcon.ContextMenuStrip.Items.Add("Close", null, OnCloseClicked);
+         notifyIcon.Visible = true;
+      }
+
+      private void OnTooltipClicked(object sender, Forms.MouseEventArgs e)
+      {
+         if (e.Button.Equals(Forms.MouseButtons.Left))
+         {
+            this.Show();
+            this.WindowState = WindowState.Normal;
+            this.Activate();
+         }
+      }
+
+      private void OnOpenClicked(object sender, EventArgs e)
+      {
+         this.Show();
+         this.WindowState = WindowState.Normal;
+         this.Activate();
+      }
+
+      private void OnCloseClicked(object sender, EventArgs e)
+      {
+         this.Close();
+      }
+
+      private void OnShowNotification(string message)
+      {
+         notifyIcon.ShowBalloonTip(5000, "Notificare", message, Forms.ToolTipIcon.Info);
+      }
+      #endregion
+
+      #region UI Click Events
       private void AddButton_Click(object sender, RoutedEventArgs e)
       {
          AddHandlerView view = new AddHandlerView();
@@ -49,5 +104,7 @@ namespace PortalJustNotificationManager
          viewModel.SelectedCaseHandler.HasNotifications = false;
          ((TextBlock)((Expander)sender).Header).FontWeight = FontWeights.Normal;
       }
+      #endregion
+      #endregion
    }
 }

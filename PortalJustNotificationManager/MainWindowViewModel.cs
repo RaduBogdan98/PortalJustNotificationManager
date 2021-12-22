@@ -16,7 +16,7 @@ namespace PortalJustNotificationManager
       private ObservableCollection<CaseHandler> caseHandlers;
       private CaseHandler selectedCaseHandler;
       internal PortalJustHttpClient httpClient;
-      internal PersistanceManager<ObservableCollection<CaseHandler>> persistanceManager;     
+      internal PersistanceManager<ObservableCollection<CaseHandler>> persistanceManager;
 
       private MainWindowViewModel()
       {
@@ -38,15 +38,25 @@ namespace PortalJustNotificationManager
          return instance;
       }
 
+      #region Raise Notification Event
+      internal event Action<string> ShowNotificationEvent;
+
+      internal void ShowToastNotification(string message)
+      {
+         if (ShowNotificationEvent != null)
+         {
+            ShowNotificationEvent(message);
+         }
+      }
+      #endregion
+
       #region Background Worker
       private BackgroundWorker getCaseNotificationsWorker;
 
       private void RunNotificationRetrievingBackgroundWorker()
       {
-         TestClass test = new TestClass();
-
          this.getCaseNotificationsWorker = new BackgroundWorker();
-         this.getCaseNotificationsWorker.DoWork += (o, ea) => test.Test();
+         this.getCaseNotificationsWorker.DoWork += (o, ea) => RunCaseUpdaterOnTimer();
          this.getCaseNotificationsWorker.RunWorkerAsync();
       }
 
