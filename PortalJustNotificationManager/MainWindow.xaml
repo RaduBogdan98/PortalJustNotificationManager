@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortalJustNotificationManager"
         mc:Ignorable="d"
-        Title="Lawyer's Portal" Height="450" Width="800">
+        Title="Portal Notificari" Height="450" Width="850">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="75*"/>
+            <ColumnDefinition Width="28*"/>
+            <ColumnDefinition Width="72*"/>
         </Grid.ColumnDefinitions>
 
         <Grid>
@@ -71,7 +71,8 @@
             <ListView Grid.Row="1" SelectionMode="Single"
                   x:Name="HandlersList" BorderBrush="Transparent"
                   ItemsSource="{Binding CaseHandlers, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding SelectedCaseHandler, UpdateSourceTrigger=PropertyChanged}">
+                  SelectedItem="{Binding SelectedCaseHandler, UpdateSourceTrigger=PropertyChanged}"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -113,7 +114,7 @@
 
                             <TextBlock Text="{Binding CaseFile.Number}"
                                    HorizontalAlignment="Left"
-                                   Margin="5 0 0 0"
+                                   Margin="10 0 0 0"
                                    FontSize="12"
                                    Grid.Row="1"
                                    Grid.Column="1"/>
@@ -171,7 +172,20 @@
                             <Expander Margin="5"
                                       Expanded="Expander_Expanded">
                                 <Expander.Header>
-                                    <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Title}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasBeenRead, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding HasBeenRead, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                        <Setter Property="FontWeight" Value="Normal"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </Expander.Header>
                                 <Expander.Content>
                                     <TextBlock Text="{Binding Description}" Margin="10" TextWrapping="Wrap"/>

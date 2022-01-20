@@ -76,7 +76,15 @@ namespace PortalJustNotificationManager
       {
          foreach (var caseHandler in CaseHandlers)
          {
-            caseHandler.UpdateCase(httpClient);
+            if(caseHandler == null)
+            {
+               CaseHandlers.Remove(caseHandler);
+               break;
+            }
+            else
+            {
+               caseHandler.UpdateCase(httpClient);
+            }
          }
       }
       #endregion

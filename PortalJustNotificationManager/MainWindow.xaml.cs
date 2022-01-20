@@ -102,7 +102,7 @@ namespace PortalJustNotificationManager
       private void Expander_Expanded(object sender, RoutedEventArgs e)
       {
          viewModel.SelectedCaseHandler.HasNotifications = false;
-         ((TextBlock)((Expander)sender).Header).FontWeight = FontWeights.Normal;
+         (((Expander)sender).DataContext as Notification).ReadNotification();
       }
       #endregion
       #endregion

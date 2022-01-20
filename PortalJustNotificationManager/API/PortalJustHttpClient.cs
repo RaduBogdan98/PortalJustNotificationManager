@@ -55,6 +55,8 @@ namespace PortalJustNotificationManager.API
          int caseDefinitionLength = responseContent.IndexOf("</Dosar>") - caseDefinitionStart + 8;
          responseContent = responseContent.Substring(caseDefinitionStart, caseDefinitionLength);
 
+         responseContent = responseContent.Replace("xsi:nil=\"true\"", "");/*remove xsi:nil="true" notation*/
+
          XmlSerializer serializer = new XmlSerializer(typeof(CaseFile));
          CaseFile result;
          using (TextReader reader = new StringReader(responseContent))
